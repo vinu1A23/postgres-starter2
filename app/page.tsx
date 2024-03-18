@@ -4,12 +4,23 @@ import { Suspense } from 'react'
 import Table from '@/components/table'
 import TablePlaceholder from '@/components/table-placeholder'
 import ExpandingArrow from '@/components/expanding-arrow'
+import { useStore } from "@/store";
+import { useEffect } from "react";
+import TodoForm from "@/components/TodoForm";
+import TodoItem from "@/components/TodoItem";
 
 export const runtime = 'edge'
 export const preferredRegion = 'home'
 export const dynamic = 'force-dynamic'
 
+
 export default function Home() {
+  const todos = useStore((state) => state.todos);
+  const fetchTodos = useStore((state) => state.fetchTodos);
+
+  useEffect(() => {
+    fetchTodos();
+  }, []);
   return (
     <main className="relative flex min-h-screen flex-col items-center justify-center">
       <Link
@@ -87,6 +98,15 @@ export default function Home() {
           <p className="font-light">Source</p>
         </Link>
       </div>
+      <div className="container mx-auto max-w-md p-4">
+      <TodoForm />
+      <h1 className="text-2xl font-bold mb-4">Todo List</h1>
+      {todos.length === 0 ? (
+        <p className="text-center">No Todos Found</p>
+      ) : (
+        todos.map((todo) => <TodoItem key={todo.id} todo={todo} />)
+      )}
+    </div>
     </main>
   )
 }
