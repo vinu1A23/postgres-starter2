@@ -5,7 +5,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "flask-dev": "pip3 install -r requirements.txt && python3 -m flask --app api/app run -p 5328",
+    "next-dev": "next dev",
+    "dev": "concurrently \"pnpm run next-dev\" \"pnpm run flask-dev\"",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -17,6 +19,7 @@
     "@types/react-dom": "18.2.11",
     "@vercel/postgres": "0.5.0",
     "autoprefixer": "10.4.16",
+    "concurrently": "^8.2.2",
     "eslint": "8.51.0",
     "eslint-config-next": "13.5.4",
     "ms": "^2.1.3",
